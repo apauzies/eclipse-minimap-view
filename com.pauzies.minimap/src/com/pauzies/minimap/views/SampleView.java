@@ -1,8 +1,15 @@
 package com.pauzies.minimap.views;
 
+import org.eclipse.jface.text.IViewportListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BidiSegmentEvent;
+import org.eclipse.swt.custom.BidiSegmentListener;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Composite;
@@ -50,9 +57,31 @@ public class SampleView extends ViewPart {
 			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 				System.err.println(part.toString() + selection);
 				if (part instanceof TextEditor) {
-					TextEditor editor = (TextEditor) part;
+					final TextEditor editor = (TextEditor) part;
 					fillMiniMap(minimap, editor);
 					highlightVisibleRegion(minimap, editor);
+					editor.getMySourceViewer().getTextWidget().addControlListener(new ControlListener() {
+						
+						@Override
+						public void controlResized(ControlEvent e) {
+							// TODO Auto-generated method stub
+							highlightVisibleRegion(minimap, editor);
+						}
+						
+						@Override
+						public void controlMoved(ControlEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+					editor.getMySourceViewer().getTextWidget().addBidiSegmentListener(new BidiSegmentListener() {
+						
+						@Override
+						public void lineGetSegments(BidiSegmentEvent event) {
+							// TODO Auto-generated method stub
+							highlightVisibleRegion(minimap, editor);
+						}
+					});
 				}
 
 			}
