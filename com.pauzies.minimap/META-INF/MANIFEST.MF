@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Minimap
+Bundle-SymbolicName: com.pauzies.minimap; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.pauzies.minimap.Activator
+Bundle-Vendor: PAUZIES
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.editors;bundle-version="3.7.0",
+ org.eclipse.jface.text;bundle-version="3.7.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
