@@ -1,6 +1,5 @@
 package com.pauzies.minimap.views;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -18,7 +17,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
@@ -38,15 +36,6 @@ public class SampleView extends ViewPart {
 
 		public ISourceViewer getSourceViewer() {
 			try {
-				//for (Method m : AbstractTextEditor.class.getDeclaredMethods()) {
-				//	System.err.println(m);
-				//}
-				//for (Field f : AbstractTextEditor.class.getDeclaredFields()) {
-				//	System.err.println(f);
-				//}
-				//Field f = AbstractTextEditor.class.getDeclaredField("fSourceViewer");
-				//f.setAccessible(true);
-				//return (ISourceViewer)f.get(editor);
 				Method m = AbstractTextEditor.class.getDeclaredMethod("getSourceViewer");
 				m.setAccessible(true);
 				return (ISourceViewer) m.invoke(editor);
