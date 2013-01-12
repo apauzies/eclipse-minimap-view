@@ -2,3 +2,5 @@
 
 * Copy/Paste the content of dropins to your eclipse/dropins folder
 * Window -> Show View -> Other -> Sample Category -> Minimap
+
+![screenshot](https://raw.github.com/apauzies/eclipse-minimap-view/master/screenshot.png)
