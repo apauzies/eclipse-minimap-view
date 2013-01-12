@@ -5,15 +5,15 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Sample Category"
+            name="MiniMap"
             id="com.pauzies.minimap">
       </category>
       <view
             name="MiniMap"
             icon="icons/sample.gif"
             category="com.pauzies.minimap"
-            class="com.pauzies.minimap.views.SampleView"
-            id="com.pauzies.minimap.views.SampleView">
+            class="com.pauzies.minimap.views.MiniMapView"
+            id="com.pauzies.minimap.views.MiniMapView">
       </view>
    </extension>
 

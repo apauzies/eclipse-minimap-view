@@ -20,12 +20,13 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
-public class SampleView extends ViewPart {
+public class MiniMapView extends ViewPart {
 
-	public static final String ID = "com.pauzies.minimap.views.SampleView";
+	public static final String ID = "com.pauzies.minimap.views.MiniMapView";
 
-	private static final Color COLOR_DEFAULT = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
-	private static final Color COLOR_HIGHLIGHT = new Color(Display.getCurrent(), 200, 230, 230);
+	private static final Color COLOR_DEFAULT = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+	private static final Color COLOR_HIGHLIGHT = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION);
+	private static final Color COLOR_TEXT = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
 
 	class MyTextEditor {
 		private final AbstractTextEditor editor;
@@ -80,7 +81,8 @@ public class SampleView extends ViewPart {
 		final StyledText minimap = new StyledText(parent, SWT.NONE);
 		minimap.setEditable(false);
 		minimap.setEnabled(false);
-
+		minimap.setForeground(COLOR_TEXT);
+		
 		Font font = new Font(parent.getDisplay(), "Arial", 4, SWT.NONE);
 		minimap.setFont(font);
 
@@ -97,21 +99,17 @@ public class SampleView extends ViewPart {
 
 						@Override
 						public void controlResized(ControlEvent e) {
-							// TODO Auto-generated method stub
 							highlightVisibleRegion(minimap, editor);
 						}
 
 						@Override
 						public void controlMoved(ControlEvent e) {
-							// TODO Auto-generated method stub
-
 						}
 					});
 					editor.getSourceViewer().getTextWidget().addBidiSegmentListener(new BidiSegmentListener() {
 
 						@Override
 						public void lineGetSegments(BidiSegmentEvent event) {
-							// TODO Auto-generated method stub
 							highlightVisibleRegion(minimap, editor);
 						}
 					});
