@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Minimap
 Bundle-SymbolicName: com.pauzies.minimap; singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: com.pauzies.minimap.Activator
 Bundle-Vendor: PAUZIES
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

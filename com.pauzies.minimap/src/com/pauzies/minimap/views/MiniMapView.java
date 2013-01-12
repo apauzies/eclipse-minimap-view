@@ -60,10 +60,11 @@ public class MiniMapView extends ViewPart {
 			return null;
 		}
 	}
-
+	
 	private static void fillMiniMap(StyledText minimap, MyTextEditor editor) {
 		StyledText text = editor.getSourceViewer().getTextWidget();
 		minimap.setContent(text.getContent());
+		minimap.setStyleRanges(editor.getSourceViewer().getTextWidget().getStyleRanges());
 	}
 
 	private void highlightVisibleRegion(StyledText minimap, MyTextEditor editor) {
