@@ -30,9 +30,11 @@ public class MiniMapView extends ViewPart {
 
 	public static final String ID = "com.pauzies.minimap.views.MiniMapView";
 
-	private static final Color COLOR_DEFAULT = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
-	private static final Color COLOR_HIGHLIGHT = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION);
-	private static final Color COLOR_TEXT = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
+	private Color backgroundColor; // = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_BACKGROUND);
+	private Color foregroundColor; // = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_FOREGROUND);
+	private Color selectionBackgroundColor; // = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION);
+	private Color selectionForegroundColor; // = Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT);
+
 	private ISelectionListener selectionListener;
 	private ControlListener controlListener;
 	private BidiSegmentListener segmentListener;
@@ -77,14 +79,15 @@ public class MiniMapView extends ViewPart {
 		minimap.setContent(text.getContent());
 	}
 
-	private static void highlightVisibleRegion(StyledText minimap, MyTextEditor editor) {
+	private void highlightVisibleRegion(StyledText minimap, MyTextEditor editor) {
 		int start = editor.getSourceViewer().getTopIndexStartOffset();
 		int end = editor.getSourceViewer().getBottomIndexEndOffset();
 		int startLine = minimap.getLineAtOffset(start);
 		int endLine = minimap.getLineAtOffset(end);
 		// Reset
-		minimap.setLineBackground(0, minimap.getLineCount() - 1, COLOR_DEFAULT);
-		minimap.setLineBackground(startLine, endLine - startLine +1, COLOR_HIGHLIGHT);
+		minimap.setLineBackground(0, minimap.getLineCount() - 1, backgroundColor);
+		minimap.setLineBackground(startLine, endLine - startLine +1, selectionBackgroundColor);
+		//minimap.setSelection(minimap.getOffsetAtLine(startLine), minimap.getOffsetAtLine(endLine - startLine +1));
 	}
 
 	private void changeEditor(MouseEvent e) {
@@ -102,7 +105,7 @@ public class MiniMapView extends ViewPart {
 		final StyledText minimap = new StyledText(parent, SWT.NONE);
 		minimap.setEditable(false);
 		//minimap.setEnabled(true);
-		minimap.setForeground(COLOR_TEXT);
+
 		minimap.setFont(font);
 		//minimap.setCursor(null);
 		minimap.setCaret(null);
@@ -139,6 +142,7 @@ public class MiniMapView extends ViewPart {
 				editor.getSourceViewer().getTextWidget().setTopIndex(editor.getSourceViewer().getTextWidget().getTopIndex() + (e.count * -1));
 			}
 		});
+		// Disable Selection
 		minimap.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				int offset = minimap.getCaretOffset();
@@ -188,6 +192,16 @@ public class MiniMapView extends ViewPart {
 				highlightVisibleRegion(minimap, editor);
 				editor.getSourceViewer().getTextWidget().addControlListener(controlListener);
 				editor.getSourceViewer().getTextWidget().addBidiSegmentListener(segmentListener);
+				
+				foregroundColor = editor.getSourceViewer().getTextWidget().getForeground();
+				backgroundColor = editor.getSourceViewer().getTextWidget().getBackground();
+				selectionBackgroundColor = editor.getSourceViewer().getTextWidget().getSelectionBackground();
+				selectionForegroundColor = editor.getSourceViewer().getTextWidget().getSelectionForeground();
+				
+				minimap.setBackground(backgroundColor);
+				minimap.setForeground(foregroundColor);
+				minimap.setSelectionBackground(selectionBackgroundColor);
+				minimap.setSelectionForeground(selectionForegroundColor);
 			}
 
 		};
