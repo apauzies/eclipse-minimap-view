@@ -13,6 +13,8 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -85,27 +87,57 @@ public class MiniMapView extends ViewPart {
 		minimap.setLineBackground(startLine, endLine - startLine +1, COLOR_HIGHLIGHT);
 	}
 
+	private void changeEditor(MouseEvent e) {
+		StyledText text = (StyledText) e.getSource();
+		int line = text.getLineAtOffset(text.getCaretOffset());
+		//editor.getSourceViewer().getTextWidget().setCaretOffset(text.getCaretOffset());
+		editor.getSourceViewer().getTextWidget().setTopIndex(line);
+	}
+	
+	boolean mouseIsDown;
+	
 	@Override
 	public void createPartControl(Composite parent) {
 
 		final StyledText minimap = new StyledText(parent, SWT.NONE);
 		minimap.setEditable(false);
-		// minimap.set
-		minimap.setEnabled(true);
+		//minimap.setEnabled(true);
 		minimap.setForeground(COLOR_TEXT);
 		minimap.setFont(font);
-		minimap.setCursor(null);
+		//minimap.setCursor(null);
 		minimap.setCaret(null);
+		
 		minimap.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				StyledText text = (StyledText) e.getSource();
-				int line = text.getLineAtOffset(text.getCaretOffset());
-				editor.getSourceViewer().getTextWidget().setCaretOffset(text.getCaretOffset());
-				editor.getSourceViewer().getTextWidget().setTopIndex(line);
+				changeEditor(e);
+				mouseIsDown = true;
+			}
+			
+			@Override
+			public void mouseUp(MouseEvent e) {
+				changeEditor(e);
+				mouseIsDown = false;
 			}
 
+		});
+		minimap.addMouseMoveListener(new MouseMoveListener() {
+			
+			@Override
+			public void mouseMove(MouseEvent e) {
+				if (mouseIsDown) {
+					changeEditor(e);
+				}
+				
+			}
+		});
+		minimap.addMouseWheelListener(new MouseWheelListener() {
+			
+			@Override
+			public void mouseScrolled(MouseEvent e) {
+				editor.getSourceViewer().getTextWidget().setTopIndex(editor.getSourceViewer().getTextWidget().getTopIndex() + (e.count * -1));
+			}
 		});
 		minimap.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
