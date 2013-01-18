@@ -20,7 +20,7 @@
 ## Test environment ##
 
 * Tested with Eclipse Juno Version: 4.2.1
-* Java and Text editor
+* Java, Text and XML editors
 * Java >= 1.6.0
 
 ## License
